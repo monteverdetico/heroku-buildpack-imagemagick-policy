@@ -16,6 +16,8 @@ export_env_dir() {
   fi
 }
 
+export_env_dir
+
 if [ -f $MAGICK_DIR/policy.xml -a -z "$MAGICK_POLICY_OVERRIDE" ]; then
   echo "-----> Skipping as .magick/policy.xml already exists and no override was requested"
 elif [ -f $MAGICK_DIR/policy.xml -a ! -z "$MAGICK_POLICY_OVERRIDE" ]; then
