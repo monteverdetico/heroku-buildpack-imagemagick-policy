@@ -5,12 +5,12 @@ MAGICK_DIR=$BUILD_DIR/.magick
 
 export_env_dir() {
   echo "-----> Exporting env directory for ImageMagick policy buildpack"
-  env_dir=$1
+  env_dir=$3
   whitelist_regex=${2:-'(MAGICK_POLICY_OVERRIDE)'}
   blacklist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
   if [ -d "$env_dir" ]; then
     for e in $(ls $env_dir); do
-      echo "-----> $e"
+      echo "-----> Viewing environment variable: $e"
       echo "$e" | grep -E "$whitelist_regex" | grep -qvE "$blacklist_regex" &&
       export "$e=$(cat $env_dir/$e)"
       :
@@ -20,9 +20,9 @@ export_env_dir() {
 
 export_env_dir
 
-if [ -f $MAGICK_DIR/policy.xml -a -z "$MAGICK_POLICY_OVERRIDE" ]; then
+if [ -f $MAGICK_DIR/policy.xml -a -z "${MAGICK_POLICY_OVERRIDE}" ]; then
   echo "-----> Skipping as .magick/policy.xml already exists and no override was requested"
-elif [ -f $MAGICK_DIR/policy.xml -a ! -z "$MAGICK_POLICY_OVERRIDE" ]; then
+elif [ -f $MAGICK_DIR/policy.xml -a ! -z "${MAGICK_POLICY_OVERRIDE}" ]; then
   echo "-----> Replacing ImageMagick policy file"
   rm $MAGICK_DIR/policy.xml
   cat > $MAGICK_DIR/policy.xml <<EOF
