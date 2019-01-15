@@ -1,0 +1,41 @@
+#!/bin/sh
+
+BUILD_DIR=$1
+MAGICK_DIR=$BUILD_DIR/.magick
+
+export_env_dir() {
+  env_dir=$1
+  whitelist_regex=${2:-'(MAGICK_POLICY_OVERRIDE)'}
+  blacklist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
+  if [ -d "$env_dir" ]; then
+    for e in $(ls $env_dir); do
+      echo "$e" | grep -E "$whitelist_regex" | grep -qvE "$blacklist_regex" &&
+      export "$e=$(cat $env_dir/$e)"
+      :
+    done
+  fi
+}
+
+if [ -f $MAGICK_DIR/policy.xml ]; then
+  echo "-----> Skipping as .magick/policy.xml already exists"
+elif [ ! -z "$MAGICK_POLICY_OVERRIDE" ]; then
+  echo "-----> Writing ImageMagick policy file"
+  mkdir -p $MAGICK_DIR
+  cat > $MAGICK_DIR/policy.xml <<EOF
+<policymap>
+  <policy domain="resource" name="memory" value="1GiB"/>
+  <policy domain="resource" name="map" value="2GiB"/>
+  <policy domain="resource" name="width" value="16KP"/>
+  <policy domain="resource" name="height" value="16KP"/>
+  <policy domain="resource" name="area" value="128MB"/>
+  <policy domain="resource" name="disk" value="4GiB"/>
+  <policy domain="delegate" rights="none" pattern="URL" />
+  <policy domain="delegate" rights="none" pattern="HTTPS" />
+  <policy domain="delegate" rights="none" pattern="HTTP" />
+  <policy domain="path" rights="none" pattern="@*" />
+  <policy domain="cache" name="shared-secret" value="passphrase" stealth="true"/>
+</policymap>
+EOF
+else
+  echo "-----> Skipping and using default policy.xml"
+fi
