@@ -1,11 +1,12 @@
 #!/bin/sh
 
 BUILD_DIR=$1
+ENV_DIR=$3
 MAGICK_DIR=$BUILD_DIR/.magick
 
 export_env_dir() {
   echo "-----> Exporting env directory for ImageMagick policy buildpack"
-  env_dir=$1
+  env_dir=$ENV_DIR
   whitelist_regex=${2:-''}
   blacklist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
   if [ -d "$env_dir" ]; then
