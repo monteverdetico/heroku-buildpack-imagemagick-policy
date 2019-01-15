@@ -16,11 +16,11 @@ export_env_dir() {
   fi
 }
 
-if [ -f $MAGICK_DIR/policy.xml ]; then
-  echo "-----> Skipping as .magick/policy.xml already exists"
-elif [ ! -z "$MAGICK_POLICY_OVERRIDE" ]; then
-  echo "-----> Writing ImageMagick policy file"
-  mkdir -p $MAGICK_DIR
+if [ -f $MAGICK_DIR/policy.xml -a -z "$MAGICK_POLICY_OVERRIDE" ]; then
+  echo "-----> Skipping as .magick/policy.xml already exists and no override was requested"
+elif [ -f $MAGICK_DIR/policy.xml -a ! -z "$MAGICK_POLICY_OVERRIDE" ]; then
+  echo "-----> Replacing ImageMagick policy file"
+  rm $MAGICK_DIR/policy.xml
   cat > $MAGICK_DIR/policy.xml <<EOF
 <policymap>
   <policy domain="resource" name="memory" value="1GiB"/>
