@@ -5,18 +5,18 @@ MAGICK_DIR=$BUILD_DIR/.magick
 
 export_env_dir() {
   echo "-----> Exporting env directory for ImageMagick policy buildpack"
-  env_dir=$3
-  whitelist_regex=${2:-'(MAGICK_POLICY_OVERRIDE)'}
+  env_dir=$1
+  whitelist_regex=${2:-''}
   blacklist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
   if [ -d "$env_dir" ]; then
     for e in $(ls $env_dir); do
-      echo "-----> Viewing environment variable: $e"
+      echo "       Viewing environment variable: $e"
       echo "$e" | grep -E "$whitelist_regex" | grep -qvE "$blacklist_regex" &&
       export "$e=$(cat $env_dir/$e)"
       :
     done
   else
-    echo "------> $env_dir does not exist"
+    echo "       $env_dir does not exist"
   fi
 }
 
