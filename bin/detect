@@ -3,5 +3,5 @@
 BUILD_DIR=$1
 MAGICK_DIR=$BUILD_DIR/.magick
 
-echo "ImageMagick Policy"
+echo "ImageMagick Install With Custom Policy"
 exit 0
