@@ -4,6 +4,22 @@ BUILD_DIR=$1
 ENV_DIR=$3
 MAGICK_DIR=$BUILD_DIR/.magick
 
+POLICY=<<EOF
+<policymap>
+<policy domain="resource" name="memory" value="1GiB"/>
+<policy domain="resource" name="map" value="2GiB"/>
+<policy domain="resource" name="width" value="16KP"/>
+<policy domain="resource" name="height" value="16KP"/>
+<policy domain="resource" name="area" value="128MB"/>
+<policy domain="resource" name="disk" value="4GiB"/>
+<policy domain="delegate" rights="none" pattern="URL" />
+<policy domain="delegate" rights="none" pattern="HTTPS" />
+<policy domain="delegate" rights="none" pattern="HTTP" />
+<policy domain="path" rights="none" pattern="@*" />
+<policy domain="cache" name="shared-secret" value="passphrase" stealth="true"/>
+</policymap>
+EOF
+
 export_env_dir() {
   env_dir=$1
   whitelist_regex=${2:-'MAGICK_POLICY_OVERRIDE'}
@@ -27,21 +43,11 @@ if [ -f $MAGICK_DIR/policy.xml -a -z "$MAGICK_POLICY_OVERRIDE" ]; then
 elif [ -f $MAGICK_DIR/policy.xml -a -n "$MAGICK_POLICY_OVERRIDE" ]; then
   echo "-----> Replacing ImageMagick policy file"
   rm $MAGICK_DIR/policy.xml
-  cat > $MAGICK_DIR/policy.xml <<EOF
-<policymap>
-  <policy domain="resource" name="memory" value="1GiB"/>
-  <policy domain="resource" name="map" value="2GiB"/>
-  <policy domain="resource" name="width" value="16KP"/>
-  <policy domain="resource" name="height" value="16KP"/>
-  <policy domain="resource" name="area" value="128MB"/>
-  <policy domain="resource" name="disk" value="4GiB"/>
-  <policy domain="delegate" rights="none" pattern="URL" />
-  <policy domain="delegate" rights="none" pattern="HTTPS" />
-  <policy domain="delegate" rights="none" pattern="HTTP" />
-  <policy domain="path" rights="none" pattern="@*" />
-  <policy domain="cache" name="shared-secret" value="passphrase" stealth="true"/>
-</policymap>
-EOF
+  cat > $MAGICK_DIR/policy.xml $POLICY
+elif [ -n "$MAGICK_POLICY_OVERRIDE" ]; then
+  echo "-----> Writing ImageMagick policy file"
+  mkdir -p $MAGICK_DIR
+  cat > $MAGICK_DIR/policy.xml $POLICY
 else
   echo "-----> Skipping and using default policy.xml"
 fi
