@@ -36,8 +36,8 @@ elif [ -f $MAGICK_DIR/policy.xml -a -n "$MAGICK_POLICY_OVERRIDE" ]; then
   <policymap>
   <policy domain="resource" name="memory" value="1GiB"/>
   <policy domain="resource" name="map" value="2GiB"/>
-  <policy domain="resource" name="width" value="16KP"/>
-  <policy domain="resource" name="height" value="16KP"/>
+  <policy domain="resource" name="width" value="25KP"/>
+  <policy domain="resource" name="height" value="25KP"/>
   <policy domain="resource" name="area" value="128MB"/>
   <policy domain="resource" name="disk" value="4GiB"/>
   <policy domain="delegate" rights="none" pattern="URL" />
@@ -55,8 +55,8 @@ elif [ -n "$MAGICK_POLICY_OVERRIDE" ]; then
   <policymap>
   <policy domain="resource" name="memory" value="1GiB"/>
   <policy domain="resource" name="map" value="2GiB"/>
-  <policy domain="resource" name="width" value="16KP"/>
-  <policy domain="resource" name="height" value="16KP"/>
+  <policy domain="resource" name="width" value="25KP"/>
+  <policy domain="resource" name="height" value="25KP"/>
   <policy domain="resource" name="area" value="128MB"/>
   <policy domain="resource" name="disk" value="4GiB"/>
   <policy domain="delegate" rights="none" pattern="URL" />
