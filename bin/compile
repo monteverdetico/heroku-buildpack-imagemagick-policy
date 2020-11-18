@@ -34,12 +34,12 @@ elif [ -f $MAGICK_DIR/policy.xml -a -n "$MAGICK_POLICY_OVERRIDE" ]; then
   rm $MAGICK_DIR/policy.xml
   cat > $MAGICK_DIR/policy.xml <<EOF
   <policymap>
-  <policy domain="resource" name="memory" value="1GiB"/>
+  <policy domain="resource" name="memory" value="8GiB"/>
   <policy domain="resource" name="map" value="2GiB"/>
   <policy domain="resource" name="width" value="25KP"/>
   <policy domain="resource" name="height" value="25KP"/>
   <policy domain="resource" name="area" value="128MB"/>
-  <policy domain="resource" name="disk" value="4GiB"/>
+  <policy domain="resource" name="disk" value="6GiB"/>
   <policy domain="delegate" rights="none" pattern="URL" />
   <policy domain="delegate" rights="none" pattern="HTTPS" />
   <policy domain="delegate" rights="none" pattern="HTTP" />
@@ -53,12 +53,12 @@ elif [ -n "$MAGICK_POLICY_OVERRIDE" ]; then
   mkdir -p $MAGICK_DIR
   cat > $MAGICK_DIR/policy.xml <<EOF
   <policymap>
-  <policy domain="resource" name="memory" value="1GiB"/>
+  <policy domain="resource" name="memory" value="8GiB"/>
   <policy domain="resource" name="map" value="2GiB"/>
   <policy domain="resource" name="width" value="25KP"/>
   <policy domain="resource" name="height" value="25KP"/>
   <policy domain="resource" name="area" value="128MB"/>
-  <policy domain="resource" name="disk" value="4GiB"/>
+  <policy domain="resource" name="disk" value="6GiB"/>
   <policy domain="delegate" rights="none" pattern="URL" />
   <policy domain="delegate" rights="none" pattern="HTTPS" />
   <policy domain="delegate" rights="none" pattern="HTTP" />
@@ -75,7 +75,7 @@ fi
 echo "-----> Install ImageMagick"
 if [ ! -f $CACHE_FILE ]; then
   # install imagemagick
-  IMAGE_MAGICK_VERSION="6.9.10-24"
+  IMAGE_MAGICK_VERSION="7.0.10-39"
   IMAGE_MAGICK_FILE="ImageMagick-$IMAGE_MAGICK_VERSION.tar.gz"
   IMAGE_MAGICK_DIR="ImageMagick-$IMAGE_MAGICK_VERSION"
   IMAGE_MAGICK_URL="https://imagemagick.org/download/$IMAGE_MAGICK_FILE"
